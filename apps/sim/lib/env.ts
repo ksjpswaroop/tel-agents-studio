@@ -113,6 +113,8 @@ export const env = createEnv({
     NEXT_PUBLIC_GOOGLE_API_KEY: z.string().optional(),
     NEXT_PUBLIC_GOOGLE_PROJECT_NUMBER: z.string().optional(),
     NEXT_PUBLIC_SOCKET_URL: z.string().url().optional(),
+    NEXT_PUBLIC_SUPABASE_URL: z.string().url().optional(),
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().optional(),
   },
 
   // Only need to define client variables, server variables are automatically handled
@@ -124,6 +126,8 @@ export const env = createEnv({
     NEXT_PUBLIC_GOOGLE_API_KEY: getEnv('NEXT_PUBLIC_GOOGLE_API_KEY'),
     NEXT_PUBLIC_GOOGLE_PROJECT_NUMBER: getEnv('NEXT_PUBLIC_GOOGLE_PROJECT_NUMBER'),
     NEXT_PUBLIC_SOCKET_URL: getEnv('NEXT_PUBLIC_SOCKET_URL'),
+    NEXT_PUBLIC_SUPABASE_URL: getEnv('NEXT_PUBLIC_SUPABASE_URL'),
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: getEnv('NEXT_PUBLIC_SUPABASE_ANON_KEY'),
   },
 })
 

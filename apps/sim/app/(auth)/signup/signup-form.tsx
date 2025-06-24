@@ -9,7 +9,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { client } from '@/lib/auth-client'
 import { cn } from '@/lib/utils'
-import { SocialLoginButtons } from '@/app/(auth)/components/social-login-buttons'
 
 const PASSWORD_VALIDATIONS = {
   minLength: { regex: /.{8,}/, message: 'Password must be at least 8 characters long.' },
@@ -407,19 +406,6 @@ function SignupFormContent({
 
       <div className='flex flex-col gap-6'>
         <div className='rounded-xl border border-neutral-700/40 bg-neutral-800/50 p-6 backdrop-blur-sm'>
-          <SocialLoginButtons
-            githubAvailable={githubAvailable}
-            googleAvailable={googleAvailable}
-            callbackURL={redirectUrl || '/w'}
-            isProduction={isProduction}
-          />
-
-          <div className='relative mt-2 py-4'>
-            <div className='absolute inset-0 flex items-center'>
-              <div className='w-full border-neutral-700/50 border-t' />
-            </div>
-          </div>
-
           <form onSubmit={onSubmit} className='space-y-5'>
             <div className='space-y-4'>
               <div className='space-y-2'>

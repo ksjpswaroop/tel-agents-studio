@@ -32,6 +32,8 @@ interface SocketContextType {
   socket: Socket | null
   isConnected: boolean
   isConnecting: boolean
+  connectionError: string | null
+  isRetrying: boolean
   currentWorkflowId: string | null
   presenceUsers: PresenceUser[]
   joinWorkflow: (workflowId: string) => void
@@ -40,6 +42,7 @@ interface SocketContextType {
   emitSubblockUpdate: (blockId: string, subblockId: string, value: any) => void
   emitCursorUpdate: (cursor: { x: number; y: number }) => void
   emitSelectionUpdate: (selection: { type: 'block' | 'edge' | 'none'; id?: string }) => void
+  retry: () => void
   // Event handlers for receiving real-time updates
   onWorkflowOperation: (handler: (data: any) => void) => void
   onSubblockUpdate: (handler: (data: any) => void) => void
@@ -54,6 +57,8 @@ const SocketContext = createContext<SocketContextType>({
   socket: null,
   isConnected: false,
   isConnecting: false,
+  connectionError: null,
+  isRetrying: false,
   currentWorkflowId: null,
   presenceUsers: [],
   joinWorkflow: () => {},
@@ -62,6 +67,7 @@ const SocketContext = createContext<SocketContextType>({
   emitSubblockUpdate: () => {},
   emitCursorUpdate: () => {},
   emitSelectionUpdate: () => {},
+  retry: () => {},
   onWorkflowOperation: () => {},
   onSubblockUpdate: () => {},
   onCursorUpdate: () => {},
@@ -82,8 +88,12 @@ export function SocketProvider({ children, user }: SocketProviderProps) {
   const [socket, setSocket] = useState<Socket | null>(null)
   const [isConnected, setIsConnected] = useState(false)
   const [isConnecting, setIsConnecting] = useState(false)
+  const [connectionError, setConnectionError] = useState<string | null>(null)
+  const [isRetrying, setIsRetrying] = useState(false)
+  const [retryCount, setRetryCount] = useState(0)
   const [currentWorkflowId, setCurrentWorkflowId] = useState<string | null>(null)
   const [presenceUsers, setPresenceUsers] = useState<PresenceUser[]>([])
+  const retryTimeoutRef = useRef<NodeJS.Timeout>()
 
   // Use refs to store event handlers to avoid stale closures
   const eventHandlers = useRef<{
@@ -96,12 +106,26 @@ export function SocketProvider({ children, user }: SocketProviderProps) {
     workflowDeleted?: (data: any) => void
   }>({})
 
+  // Helper function to calculate retry delay with exponential backoff
+  const getRetryDelay = (attemptCount: number) => {
+    return Math.min(1000 * Math.pow(2, attemptCount), 30000) // Max 30 seconds
+  }
+
+  // Helper function to clear retry timeout
+  const clearRetryTimeout = () => {
+    if (retryTimeoutRef.current) {
+      clearTimeout(retryTimeoutRef.current)
+      retryTimeoutRef.current = undefined
+    }
+  }
+
   // Initialize socket when user is available
   useEffect(() => {
     if (!user?.id || socket) return
 
     logger.info('Initializing socket connection for user:', user.id)
     setIsConnecting(true)
+    setConnectionError(null)
 
     const initializeSocket = async () => {
       try {
@@ -112,7 +136,8 @@ export function SocketProvider({ children, user }: SocketProviderProps) {
         })
 
         if (!tokenResponse.ok) {
-          throw new Error('Failed to generate socket token')
+          const errorText = await tokenResponse.text()
+          throw new Error(`Failed to generate socket token: ${tokenResponse.status} ${errorText}`)
         }
 
         const { token } = await tokenResponse.json()
@@ -129,7 +154,7 @@ export function SocketProvider({ children, user }: SocketProviderProps) {
         const socketInstance = io(socketUrl, {
           transports: ['polling', 'websocket'],
           withCredentials: true,
-          reconnectionAttempts: 5,
+          reconnectionAttempts: 3,
           timeout: 10000,
           auth: {
             token, // Send one-time token for authentication
@@ -140,6 +165,10 @@ export function SocketProvider({ children, user }: SocketProviderProps) {
         socketInstance.on('connect', () => {
           setIsConnected(true)
           setIsConnecting(false)
+          setConnectionError(null)
+          setRetryCount(0)
+          setIsRetrying(false)
+          clearRetryTimeout()
           logger.info('Socket connected successfully', {
             socketId: socketInstance.id,
             connected: socketInstance.connected,
@@ -158,13 +187,20 @@ export function SocketProvider({ children, user }: SocketProviderProps) {
 
         socketInstance.on('connect_error', (error: any) => {
           setIsConnecting(false)
-          logger.error('Socket connection error:', {
-            message: error.message,
-            stack: error.stack,
-            description: error.description,
-            type: error.type,
-            transport: error.transport,
-          })
+          const errorMessage = error.message || 'Socket connection failed'
+          setConnectionError(errorMessage)
+          
+          // Only log detailed error in development
+          if (process.env.NODE_ENV === 'development') {
+            logger.warn('Socket connection error:', {
+              message: error.message,
+              description: error.description,
+              type: error.type,
+              transport: error.transport,
+            })
+          } else {
+            logger.warn('Socket connection failed. Check if socket server is running.')
+          }
         })
 
         // Add reconnection logging
@@ -269,13 +305,25 @@ export function SocketProvider({ children, user }: SocketProviderProps) {
           socketInstance.close()
         }
       } catch (error) {
-        logger.error('Failed to initialize socket with token:', error)
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+        setConnectionError(errorMessage)
         setIsConnecting(false)
+        
+        if (process.env.NODE_ENV === 'development') {
+          logger.warn('Failed to initialize socket:', errorMessage)
+        } else {
+          logger.warn('Socket initialization failed. Real-time features may be unavailable.')
+        }
       }
     }
 
     // Start the socket initialization
     initializeSocket()
+    
+    // Cleanup function
+    return () => {
+      clearRetryTimeout()
+    }
   }, [user?.id])
 
   // Join workflow room
@@ -389,12 +437,38 @@ export function SocketProvider({ children, user }: SocketProviderProps) {
     eventHandlers.current.workflowDeleted = handler
   }, [])
 
+  // Manual retry function
+  const retry = useCallback(() => {
+    if (isConnecting || isRetrying || isConnected) return
+    
+    setIsRetrying(true)
+    setConnectionError(null)
+    
+    const delay = getRetryDelay(retryCount)
+    logger.info(`Retrying socket connection in ${delay}ms (attempt ${retryCount + 1})`)
+    
+    retryTimeoutRef.current = setTimeout(() => {
+      setRetryCount(prev => prev + 1)
+      setIsRetrying(false)
+      
+      // Trigger reconnection by clearing and re-setting the socket
+      if (socket) {
+        socket.close()
+        setSocket(null)
+      }
+      
+      // The useEffect will reinitialize the socket
+    }, delay)
+  }, [isConnecting, isRetrying, isConnected, retryCount, socket, getRetryDelay])
+
   return (
     <SocketContext.Provider
       value={{
         socket,
         isConnected,
         isConnecting,
+        connectionError,
+        isRetrying,
         currentWorkflowId,
         presenceUsers,
         joinWorkflow,
@@ -403,6 +477,7 @@ export function SocketProvider({ children, user }: SocketProviderProps) {
         emitSubblockUpdate,
         emitCursorUpdate,
         emitSelectionUpdate,
+        retry,
         onWorkflowOperation,
         onSubblockUpdate,
         onCursorUpdate,

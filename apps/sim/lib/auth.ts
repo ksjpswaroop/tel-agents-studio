@@ -130,7 +130,7 @@ export const auth = betterAuth({
         'github',
         'email-password',
         'confluence',
-        'supabase',
+        ...(env.SUPABASE_CLIENT_ID && env.SUPABASE_CLIENT_SECRET ? ['supabase'] : []),
         'x',
         'notion',
         'microsoft',
@@ -468,63 +468,67 @@ export const auth = betterAuth({
           redirectURI: `${env.NEXT_PUBLIC_APP_URL}/api/auth/oauth2/callback/outlook`,
         },
 
-        // Supabase provider
-        {
-          providerId: 'supabase',
-          clientId: env.SUPABASE_CLIENT_ID as string,
-          clientSecret: env.SUPABASE_CLIENT_SECRET as string,
-          authorizationUrl: 'https://api.supabase.com/v1/oauth/authorize',
-          tokenUrl: 'https://api.supabase.com/v1/oauth/token',
-          // Supabase doesn't have a standard userInfo endpoint that works with our flow,
-          // so we use a dummy URL and rely on our custom getUserInfo implementation
-          userInfoUrl: 'https://dummy-not-used.supabase.co',
-          scopes: ['database.read', 'database.write', 'projects.read'],
-          responseType: 'code',
-          pkce: true,
-          redirectURI: `${env.NEXT_PUBLIC_APP_URL}/api/auth/oauth2/callback/supabase`,
-          getUserInfo: async (tokens) => {
-            try {
-              logger.info('Creating Supabase user profile from token data')
+        // Supabase provider (only if credentials are configured)
+        ...(env.SUPABASE_CLIENT_ID && env.SUPABASE_CLIENT_SECRET
+          ? [
+              {
+                providerId: 'supabase',
+                clientId: env.SUPABASE_CLIENT_ID as string,
+                clientSecret: env.SUPABASE_CLIENT_SECRET as string,
+                authorizationUrl: 'https://api.supabase.com/v1/oauth/authorize',
+                tokenUrl: 'https://api.supabase.com/v1/oauth/token',
+                // Supabase doesn't have a standard userInfo endpoint that works with our flow,
+                // so we use a dummy URL and rely on our custom getUserInfo implementation
+                userInfoUrl: 'https://dummy-not-used.supabase.co',
+                scopes: ['database.read', 'database.write', 'projects.read'],
+                responseType: 'code',
+                pkce: true,
+                redirectURI: `${env.NEXT_PUBLIC_APP_URL}/api/auth/oauth2/callback/supabase`,
+                getUserInfo: async (tokens: any) => {
+                  try {
+                    logger.info('Creating Supabase user profile from token data')
 
-              // Extract user identifier from tokens if possible
-              let userId = 'supabase-user'
-              if (tokens.idToken) {
-                try {
-                  // Try to decode the JWT to get user information
-                  const decodedToken = JSON.parse(
-                    Buffer.from(tokens.idToken.split('.')[1], 'base64').toString()
-                  )
-                  if (decodedToken.sub) {
-                    userId = decodedToken.sub
+                    // Extract user identifier from tokens if possible
+                    let userId = 'supabase-user'
+                    if (tokens.idToken) {
+                      try {
+                        // Try to decode the JWT to get user information
+                        const decodedToken = JSON.parse(
+                          Buffer.from(tokens.idToken.split('.')[1], 'base64').toString()
+                        )
+                        if (decodedToken.sub) {
+                          userId = decodedToken.sub
+                        }
+                      } catch (e) {
+                        logger.warn('Failed to decode Supabase ID token', {
+                          error: e,
+                        })
+                      }
+                    }
+
+                    // Generate a unique enough identifier
+                    const uniqueId = `${userId}-${Date.now()}`
+
+                    const now = new Date()
+
+                    // Create a synthetic user profile since we can't fetch one
+                    return {
+                      id: uniqueId,
+                      name: 'Supabase User',
+                      email: `${uniqueId.replace(/[^a-zA-Z0-9]/g, '')}@supabase.user`,
+                      image: null,
+                      emailVerified: false,
+                      createdAt: now,
+                      updatedAt: now,
+                    }
+                  } catch (error) {
+                    logger.error('Error creating Supabase user profile:', { error })
+                    return null
                   }
-                } catch (e) {
-                  logger.warn('Failed to decode Supabase ID token', {
-                    error: e,
-                  })
-                }
-              }
-
-              // Generate a unique enough identifier
-              const uniqueId = `${userId}-${Date.now()}`
-
-              const now = new Date()
-
-              // Create a synthetic user profile since we can't fetch one
-              return {
-                id: uniqueId,
-                name: 'Supabase User',
-                email: `${uniqueId.replace(/[^a-zA-Z0-9]/g, '')}@supabase.user`,
-                image: null,
-                emailVerified: false,
-                createdAt: now,
-                updatedAt: now,
-              }
-            } catch (error) {
-              logger.error('Error creating Supabase user profile:', { error })
-              return null
-            }
-          },
-        },
+                },
+              },
+            ]
+          : []),
 
         // X provider
         {

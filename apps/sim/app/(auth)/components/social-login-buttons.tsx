@@ -168,6 +168,11 @@ export function SocialLoginButtons({
     )
   }
 
+  // Don't render anything if no providers are available
+  if (!githubAvailable && !googleAvailable) {
+    return null
+  }
+
   return (
     <div className='grid gap-3'>
       {renderGithubButton()}
