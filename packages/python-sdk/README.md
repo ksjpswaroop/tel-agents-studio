@@ -1,6 +1,6 @@
-# Sim Studio Python SDK
+# TEL Cognitive Platform Python SDK
 
-The official Python SDK for [Sim Studio](https://simstudio.ai), allowing you to execute workflows programmatically from your Python applications.
+The official Python SDK for [TEL Cognitive Platform](https://simstudio.ai), allowing you to execute workflows programmatically from your Python applications.
 
 ## Installation
 
@@ -16,7 +16,7 @@ from simstudio import SimStudioClient
 
 # Initialize the client
 client = SimStudioClient(
-    api_key=os.getenv("SIMSTUDIO_API_KEY", "your-api-key-here"),
+    api_key=os.getenv("TEL_API_KEY", "your-api-key-here"),
     base_url="https://simstudio.ai"  # optional, defaults to https://simstudio.ai
 )
 
@@ -38,8 +38,8 @@ except Exception as error:
 SimStudioClient(api_key: str, base_url: str = "https://simstudio.ai")
 ```
 
-- `api_key` (str): Your Sim Studio API key
-- `base_url` (str, optional): Base URL for the Sim Studio API (defaults to `https://simstudio.ai`)
+- `api_key` (str): Your TEL Cognitive Platform API key
+- `base_url` (str, optional): Base URL for the TEL Cognitive Platform API (defaults to `https://simstudio.ai`)
 
 #### Methods
 
@@ -180,7 +180,7 @@ class SimStudioError(Exception):
 import os
 from simstudio import SimStudioClient
 
-client = SimStudioClient(api_key=os.getenv("SIMSTUDIO_API_KEY"))
+client = SimStudioClient(api_key=os.getenv("TEL_API_KEY"))
 
 def run_workflow():
     try:
@@ -216,7 +216,7 @@ run_workflow()
 from simstudio import SimStudioClient, SimStudioError
 import os
 
-client = SimStudioClient(api_key=os.getenv("SIMSTUDIO_API_KEY"))
+client = SimStudioClient(api_key=os.getenv("TEL_API_KEY"))
 
 def execute_with_error_handling():
     try:
@@ -246,7 +246,7 @@ from simstudio import SimStudioClient
 import os
 
 # Using context manager to automatically close the session
-with SimStudioClient(api_key=os.getenv("SIMSTUDIO_API_KEY")) as client:
+with SimStudioClient(api_key=os.getenv("TEL_API_KEY")) as client:
     result = client.execute_workflow("workflow-id")
     print("Result:", result)
 # Session is automatically closed here
@@ -260,7 +260,7 @@ from simstudio import SimStudioClient
 
 # Using environment variables
 client = SimStudioClient(
-    api_key=os.getenv("SIMSTUDIO_API_KEY"),
+    api_key=os.getenv("TEL_API_KEY"),
     base_url=os.getenv("SIMSTUDIO_BASE_URL", "https://simstudio.ai")
 )
 ```
@@ -271,7 +271,7 @@ client = SimStudioClient(
 from simstudio import SimStudioClient
 import os
 
-client = SimStudioClient(api_key=os.getenv("SIMSTUDIO_API_KEY"))
+client = SimStudioClient(api_key=os.getenv("TEL_API_KEY"))
 
 def execute_workflows_batch(workflow_data_pairs):
     """Execute multiple workflows with different input data."""
@@ -314,7 +314,7 @@ for result in results:
 
 ## Getting Your API Key
 
-1. Log in to your [Sim Studio](https://simstudio.ai) account
+1. Log in to your [TEL Cognitive Platform](https://simstudio.ai) account
 2. Navigate to your workflow
 3. Click on "Deploy" to deploy your workflow
 4. Select or create an API key during the deployment process
