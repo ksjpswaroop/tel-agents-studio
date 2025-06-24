@@ -1,7 +1,7 @@
 {
-  "name": "simstudio",
+  "name": "tel-cognitive-platform",
   "version": "0.1.18",
-  "description": "Sim Studio CLI - Run Sim Studio with a single command",
+  "description": "TEL Cognitive Platform CLI - Run TEL Cognitive Platform with a single command",
   "main": "dist/index.js",
   "bin": {
     "simstudio": "dist/index.js"
@@ -27,7 +27,7 @@
     "automation",
     "docker"
   ],
-  "author": "Sim Studio",
+  "author": "TEL Cognitive Platform",
   "license": "Apache-2.0",
   "dependencies": {
     "chalk": "^4.1.2",

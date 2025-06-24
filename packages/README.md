@@ -1,6 +1,6 @@
-# Sim Studio SDKs
+# TEL Cognitive Platform SDKs
 
-This directory contains the official SDKs for [Sim Studio](https://simstudio.ai), allowing developers to execute workflows programmatically from their applications.
+This directory contains the official SDKs for [TEL Cognitive Platform](https://simstudio.ai), allowing developers to execute workflows programmatically from their applications.
 
 ## Available SDKs
 
@@ -80,7 +80,7 @@ Both SDKs are built on top of the same REST API endpoints:
 
 Both SDKs use API key authentication via the `X-API-Key` header. You can obtain an API key by:
 
-1. Logging in to your [Sim Studio](https://simstudio.ai) account
+1. Logging in to your [TEL Cognitive Platform](https://simstudio.ai) account
 2. Navigating to your workflow
 3. Clicking "Deploy" to deploy your workflow
 4. Creating or selecting an API key during deployment
@@ -91,10 +91,10 @@ Both SDKs support environment variable configuration:
 
 ```bash
 # Required
-SIMSTUDIO_API_KEY=your-api-key-here
+TEL_API_KEY=your-api-key-here
 
 # Optional
-SIMSTUDIO_BASE_URL=https://simstudio.ai  # or your custom domain
+TEL_BASE_URL=https://simstudio.ai  # or your custom domain
 ```
 
 ## Error Handling
@@ -118,7 +118,7 @@ Both SDKs provide consistent error handling with these error codes:
 import { SimStudioClient, SimStudioError } from 'simstudio-ts-sdk';
 
 const client = new SimStudioClient({
-  apiKey: process.env.SIMSTUDIO_API_KEY!
+  apiKey: process.env.TEL_API_KEY!
 });
 
 try {
@@ -150,7 +150,7 @@ try {
 from simstudio import SimStudioClient, SimStudioError
 import os
 
-client = SimStudioClient(api_key=os.getenv('SIMSTUDIO_API_KEY'))
+client = SimStudioClient(api_key=os.getenv('TEL_API_KEY'))
 
 try:
     # Check if workflow is ready
@@ -193,13 +193,13 @@ python -m build
 **TypeScript:**
 ```bash
 cd packages/ts-sdk
-SIMSTUDIO_API_KEY=your-key bun run examples/basic-usage.ts
+TEL_API_KEY=your-key bun run examples/basic-usage.ts
 ```
 
 **Python:**
 ```bash
 cd packages/python-sdk
-SIMSTUDIO_API_KEY=your-key python examples/basic_usage.py
+TEL_API_KEY=your-key python examples/basic_usage.py
 ```
 
 ### Testing
