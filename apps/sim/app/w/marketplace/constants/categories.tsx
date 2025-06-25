@@ -64,7 +64,7 @@ export const CATEGORIES: Category[] = [
     value: 'other',
     label: 'Other',
     icon: <Brain className='mr-2 h-4 w-4' />,
-    color: '#802FFF', // Brand purple
+    color: '#1877F2', // Brand purple
   },
 ]
 

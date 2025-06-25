@@ -17,7 +17,7 @@ export default function PasswordAuth({
   subdomain,
   onAuthSuccess,
   title = 'chat',
-  primaryColor = '#802FFF',
+  primaryColor = '#1877F2',
 }: PasswordAuthProps) {
   // Password auth state
   const [password, setPassword] = useState('')

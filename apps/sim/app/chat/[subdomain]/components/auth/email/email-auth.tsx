@@ -18,7 +18,7 @@ export default function EmailAuth({
   subdomain,
   onAuthSuccess,
   title = 'chat',
-  primaryColor = '#802FFF',
+  primaryColor = '#1877F2',
 }: EmailAuthProps) {
   // Email auth state
   const [email, setEmail] = useState('')

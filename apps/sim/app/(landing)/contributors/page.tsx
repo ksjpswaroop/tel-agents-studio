@@ -550,7 +550,7 @@ export default function ContributorsPage() {
                     <Button
                       asChild
                       size='lg'
-                      className='bg-[#701ffc] text-white transition-colors duration-500 hover:bg-[#802FFF]'
+                      className='bg-[#701ffc] text-white transition-colors duration-500 hover:bg-[#1877F2]'
                     >
                       <a
                         href='https://github.com/simstudioai/sim/blob/main/.github/CONTRIBUTING.md'

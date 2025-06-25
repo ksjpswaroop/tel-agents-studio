@@ -30,7 +30,7 @@ const blockConfig = {
   },
   agent: {
     icon: AgentIcon, // Assuming custom AgentIcon
-    color: '#9333ea', // Purple
+    color: '#1877F2', // Facebook blue
     name: 'Agent 1',
   },
   router: {

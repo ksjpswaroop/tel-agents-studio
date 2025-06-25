@@ -79,9 +79,7 @@ const NavLinks = ({
   const navigationLinks = [
     // { href: "/", label: "Marketplace" },
     ...(currentPath !== '/' ? [{ href: '/', label: 'Home' }] : []),
-    { href: 'https://docs.simstudio.ai/', label: 'Docs', external: true },
     // { href: '/', label: 'Blog' },
-    { href: '/contributors', label: 'Contributors' },
   ]
 
   const handleContributorsHover = usePrefetchOnHover()
@@ -149,14 +147,12 @@ const NavLinks = ({
 }
 
 interface NavClientProps {
-  children: React.ReactNode
   initialIsMobile?: boolean
   currentPath?: string
   onContactClick?: () => void
 }
 
 export default function NavClient({
-  children,
   initialIsMobile,
   currentPath,
   onContactClick,
@@ -222,7 +218,6 @@ export default function NavClient({
           <div className={`flex items-center ${isMobile ? 'gap-2' : 'gap-3'}`}>
             {!isMobile && (
               <>
-                <div className='flex items-center'>{children}</div>
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -233,7 +228,7 @@ export default function NavClient({
                     target='_blank'
                     rel='noopener noreferrer'
                   >
-                    <Button className='h-[43px] bg-[#701ffc] px-6 py-2 font-geist-sans font-medium text-base text-neutral-100 transition-colors duration-200 hover:bg-[#802FFF]'>
+                    <Button className='h-[43px] bg-[#1877F2] px-6 py-2 font-geist-sans font-medium text-base text-neutral-100 transition-colors duration-200 hover:bg-[#1467d3]'>
                       Contact
                     </Button>
                   </Link>
@@ -299,7 +294,7 @@ export default function NavClient({
                                 target='_blank'
                                 rel='noopener noreferrer'
                               >
-                                <Button className='w-full bg-[#701ffc] py-6 font-medium text-base text-white shadow-[#701ffc]/20 shadow-lg transition-colors duration-200 hover:bg-[#802FFF]'>
+                                <Button className='w-full bg-[#1877F2] py-6 font-medium text-base text-white shadow-[#1877F2]/20 shadow-lg transition-colors duration-200 hover:bg-[#1467d3]'>
                                   Contact
                                 </Button>
                               </Link>

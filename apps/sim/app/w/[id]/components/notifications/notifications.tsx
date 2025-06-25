@@ -389,7 +389,7 @@ export function NotificationAlert({ notification, isFading, onHide }: Notificati
           <div className='relative flex items-start py-1'>
             {/* Left icon */}
             <div className='mt-0.5 flex-shrink-0'>
-              <Icon className='!text-[#802FFF] h-4 w-4' />
+              <Icon className='!text-[#1877F2] h-4 w-4' />
             </div>
 
             {/* Content area with equal margins */}

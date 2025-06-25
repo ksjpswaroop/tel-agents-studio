@@ -3,8 +3,6 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { usePathname } from 'next/navigation'
-import { getFormattedGitHubStars } from '../actions/github'
-import GitHubStarsClient from './github-stars-client'
 import NavClient from './nav-client'
 
 interface NavWrapperProps {
@@ -19,9 +17,6 @@ export default function NavWrapper({ onOpenTypeformLink }: NavWrapperProps) {
   const pathname = usePathname()
   const [initialIsMobile, setInitialIsMobile] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
-  // Default to a reasonable number and update it later
-  const [starCount, setStarCount] = useState('1.2k')
-
   useEffect(() => {
     // Set initial mobile state based on window width
     setInitialIsMobile(window.innerWidth < 768)
@@ -30,15 +25,6 @@ export default function NavWrapper({ onOpenTypeformLink }: NavWrapperProps) {
     setTimeout(() => {
       setIsLoaded(true)
     }, 100)
-
-    // Use server action to fetch stars
-    getFormattedGitHubStars()
-      .then((formattedStars) => {
-        setStarCount(formattedStars)
-      })
-      .catch((err) => {
-        console.error('Failed to fetch GitHub stars:', err)
-      })
   }, [])
 
   return (
@@ -70,9 +56,7 @@ export default function NavWrapper({ onOpenTypeformLink }: NavWrapperProps) {
               initialIsMobile={initialIsMobile}
               currentPath={pathname}
               onContactClick={onOpenTypeformLink}
-            >
-              <GitHubStarsClient stars={starCount} />
-            </NavClient>
+            />
           </motion.div>
         )}
       </AnimatePresence>

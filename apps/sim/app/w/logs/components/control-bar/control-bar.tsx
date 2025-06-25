@@ -153,16 +153,16 @@ export function ControlBar() {
 
         <Button
           className={`gap-2 border bg-background text-foreground hover:bg-accent ${
-            isLive ? 'border-[#802FFF]' : 'border-input'
+            isLive ? 'border-[#1877F2]' : 'border-input'
           }`}
           onClick={toggleLive}
         >
           {isLive ? (
-            <Square className='!h-3.5 !w-3.5 text-[#802FFF]' />
+            <Square className='!h-3.5 !w-3.5 text-[#1877F2]' />
           ) : (
             <Play className='!h-3.5 !w-3.5' />
           )}
-          <span className={`${isLive ? 'text-[#802FFF]' : 'text-foreground'}`}>Live</span>
+          <span className={`${isLive ? 'text-[#1877F2]' : 'text-foreground'}`}>Live</span>
         </Button>
       </div>
     </div>

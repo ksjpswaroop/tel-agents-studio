@@ -926,10 +926,10 @@ export function InviteModal({ open, onOpenChange }: InviteModalProps) {
                   }
                   className={cn(
                     'ml-auto gap-2 font-medium',
-                    'bg-[#802FFF] hover:bg-[#7028E6]',
-                    'shadow-[0_0_0_0_#802FFF] hover:shadow-[0_0_0_4px_rgba(127,47,255,0.15)]',
+                    'bg-[#1877F2] hover:bg-[#7028E6]',
+                    'shadow-[0_0_0_0_#1877F2] hover:shadow-[0_0_0_4px_rgba(127,47,255,0.15)]',
                     'text-white transition-all duration-200',
-                    'disabled:opacity-50 disabled:hover:bg-[#802FFF] disabled:hover:shadow-none'
+                    'disabled:opacity-50 disabled:hover:bg-[#1877F2] disabled:hover:shadow-none'
                   )}
                 >
                   {isSubmitting && <Loader2 className='h-4 w-4 animate-spin' />}

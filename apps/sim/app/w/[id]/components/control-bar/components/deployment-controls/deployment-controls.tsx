@@ -91,8 +91,8 @@ export function DeploymentControls({
               onClick={handleDeployClick}
               disabled={isDisabled}
               className={cn(
-                'hover:text-[#802FFF]',
-                isDeployed && 'text-[#802FFF]',
+                'hover:text-[#1877F2]',
+                isDeployed && 'text-[#1877F2]',
                 isDisabled && 'cursor-not-allowed opacity-50'
               )}
             >

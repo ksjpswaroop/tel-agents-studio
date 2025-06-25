@@ -116,10 +116,10 @@ const WorkspaceModal = React.memo<WorkspaceModalProps>(
                     disabled={!workspaceName.trim()}
                     className={cn(
                       'gap-2 font-medium',
-                      'bg-[#802FFF] hover:bg-[#7028E6]',
-                      'shadow-[0_0_0_0_#802FFF] hover:shadow-[0_0_0_4px_rgba(127,47,255,0.15)]',
+                      'bg-[#1877F2] hover:bg-[#7028E6]',
+                      'shadow-[0_0_0_0_#1877F2] hover:shadow-[0_0_0_4px_rgba(127,47,255,0.15)]',
                       'text-white transition-all duration-200',
-                      'disabled:opacity-50 disabled:hover:bg-[#802FFF] disabled:hover:shadow-none'
+                      'disabled:opacity-50 disabled:hover:bg-[#1877F2] disabled:hover:shadow-none'
                     )}
                   >
                     Create
@@ -213,10 +213,10 @@ const WorkspaceEditModal = React.memo<WorkspaceEditModalProps>(
                     disabled={!workspaceName.trim()}
                     className={cn(
                       'gap-2 font-medium',
-                      'bg-[#802FFF] hover:bg-[#7028E6]',
-                      'shadow-[0_0_0_0_#802FFF] hover:shadow-[0_0_0_4px_rgba(127,47,255,0.15)]',
+                      'bg-[#1877F2] hover:bg-[#7028E6]',
+                      'shadow-[0_0_0_0_#1877F2] hover:shadow-[0_0_0_4px_rgba(127,47,255,0.15)]',
                       'text-white transition-all duration-200',
-                      'disabled:opacity-50 disabled:hover:bg-[#802FFF] disabled:hover:shadow-none'
+                      'disabled:opacity-50 disabled:hover:bg-[#1877F2] disabled:hover:shadow-none'
                     )}
                   >
                     Update
@@ -572,7 +572,7 @@ export const WorkspaceHeader = React.memo<WorkspaceHeaderProps>(
               <div className='relative z-10 flex items-center justify-center px-2 py-[6px]'>
                 <Link
                   href={workspaceUrl}
-                  className='group flex h-6 w-6 shrink-0 items-center justify-center rounded bg-[#802FFF]'
+                  className='group flex h-6 w-6 shrink-0 items-center justify-center rounded bg-[#1877F2]'
                 >
                   <AgentIcon className='-translate-y-[0.5px] h-[18px] w-[18px] text-white transition-all group-hover:scale-105' />
                 </Link>
@@ -587,7 +587,7 @@ export const WorkspaceHeader = React.memo<WorkspaceHeaderProps>(
                     <div className='flex cursor-pointer items-center gap-2 overflow-hidden'>
                       <Link
                         href={workspaceUrl}
-                        className='group flex h-6 w-6 shrink-0 items-center justify-center rounded bg-[#802FFF]'
+                        className='group flex h-6 w-6 shrink-0 items-center justify-center rounded bg-[#1877F2]'
                         onClick={(e) => {
                           if (isOpen) e.preventDefault()
                         }}
@@ -614,7 +614,7 @@ export const WorkspaceHeader = React.memo<WorkspaceHeaderProps>(
             <div className='space-y-3'>
               <div className='flex items-center justify-between p-1'>
                 <div className='flex items-center gap-2'>
-                  <div className='flex h-8 w-8 shrink-0 items-center justify-center rounded bg-[#802FFF]'>
+                  <div className='flex h-8 w-8 shrink-0 items-center justify-center rounded bg-[#1877F2]'>
                     <AgentIcon className='h-5 w-5 text-white' />
                   </div>
                   <div className='flex max-w-full flex-col'>

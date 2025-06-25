@@ -165,7 +165,7 @@ export default function UnsubscribePage() {
                     '_blank'
                   )
                 }
-                className='w-full bg-[#701ffc] font-medium text-white shadow-sm transition-colors duration-200 hover:bg-[#802FFF]'
+                className='w-full bg-[#701ffc] font-medium text-white shadow-sm transition-colors duration-200 hover:bg-[#1877F2]'
               >
                 Contact Support
               </Button>

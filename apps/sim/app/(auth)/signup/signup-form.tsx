@@ -507,7 +507,7 @@ function SignupFormContent({
 
             <Button
               type='submit'
-              className='flex h-11 w-full items-center justify-center gap-2 bg-[#701ffc] font-medium text-base text-white shadow-[#701ffc]/20 shadow-lg transition-colors duration-200 hover:bg-[#802FFF]'
+              className='flex h-11 w-full items-center justify-center gap-2 bg-[#701ffc] font-medium text-base text-white shadow-[#701ffc]/20 shadow-lg transition-colors duration-200 hover:bg-[#1877F2]'
               disabled={isLoading}
             >
               {isLoading ? 'Creating account...' : 'Create Account'}

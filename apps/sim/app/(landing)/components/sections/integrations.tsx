@@ -129,8 +129,8 @@ function Integrations() {
                 y2='557.954'
                 gradientUnits='userSpaceOnUse'
               >
-                <stop stopColor='#9C75D7' />
-                <stop offset='1' stopColor='#9C75D7' stopOpacity='0' />
+                <stop stopColor='#1877F2' />
+                <stop offset='1' stopColor='#1877F2' stopOpacity='0' />
               </linearGradient>
               <linearGradient
                 id='paint1_linear_113_56'
@@ -140,8 +140,8 @@ function Integrations() {
                 y2='318.753'
                 gradientUnits='userSpaceOnUse'
               >
-                <stop stopColor='#9C75D7' />
-                <stop offset='1' stopColor='#9C75D7' stopOpacity='0' />
+                <stop stopColor='#1877F2' />
+                <stop offset='1' stopColor='#1877F2' stopOpacity='0' />
               </linearGradient>
               <linearGradient
                 id='paint2_linear_113_56'
@@ -151,8 +151,8 @@ function Integrations() {
                 y2='699.882'
                 gradientUnits='userSpaceOnUse'
               >
-                <stop stopColor='#9C75D7' />
-                <stop offset='1' stopColor='#9C75D7' stopOpacity='0' />
+                <stop stopColor='#1877F2' />
+                <stop offset='1' stopColor='#1877F2' stopOpacity='0' />
               </linearGradient>
               <linearGradient
                 id='paint3_linear_113_56'
@@ -162,39 +162,39 @@ function Integrations() {
                 y2='680.269'
                 gradientUnits='userSpaceOnUse'
               >
-                <stop stopColor='#9C75D7' />
-                <stop offset='1' stopColor='#9C75D7' stopOpacity='0' />
+                <stop stopColor='#1877F2' />
+                <stop offset='1' stopColor='#1877F2' stopOpacity='0' />
               </linearGradient>
             </defs>
           </svg>
         </div>
         <OrbitingCircles radius={160}>
-          <div className='flex aspect-square h-16 w-16 items-center justify-center rounded-xl border border-[#353535] bg-[#242424] p-1 shadow-[0px_2px_6px_0px_rgba(126,_48,_252,_0.1)]'>
+          <div className='flex aspect-square h-16 w-16 items-center justify-center rounded-xl border border-[#353535] bg-[#242424] p-1 shadow-[0px_2px_6px_0px_rgba(24,_119,_242,_0.1)]'>
             <Icons.pinecone />
           </div>
-          <div className='flex aspect-square h-16 w-16 items-center justify-center rounded-xl border border-[#353535] bg-[#242424] p-1 shadow-[0px_2px_6px_0px_rgba(126,_48,_252,_0.1)]'>
+          <div className='flex aspect-square h-16 w-16 items-center justify-center rounded-xl border border-[#353535] bg-[#242424] p-1 shadow-[0px_2px_6px_0px_rgba(24,_119,_242,_0.1)]'>
             <Icons.slack />
           </div>
         </OrbitingCircles>
         <OrbitingCircles iconSize={40} radius={320} reverse>
-          <div className='flex aspect-square h-16 w-16 items-center justify-center rounded-xl border border-[#353535] bg-[#242424] p-2 shadow-[0px_2px_6px_0px_rgba(126,_48,_252,_0.1)]'>
+          <div className='flex aspect-square h-16 w-16 items-center justify-center rounded-xl border border-[#353535] bg-[#242424] p-2 shadow-[0px_2px_6px_0px_rgba(24,_119,_242,_0.1)]'>
             <Icons.gitHub />
           </div>
-          <div className='flex aspect-square h-16 w-16 items-center justify-center rounded-xl border border-[#353535] bg-[#242424] p-1 shadow-[0px_2px_6px_0px_rgba(126,_48,_252,_0.1)]'>
+          <div className='flex aspect-square h-16 w-16 items-center justify-center rounded-xl border border-[#353535] bg-[#242424] p-1 shadow-[0px_2px_6px_0px_rgba(24,_119,_242,_0.1)]'>
             <Icons.supabase />
           </div>
-          <div className='flex aspect-square h-16 w-16 items-center justify-center rounded-xl border border-[#353535] bg-[#242424] p-1 shadow-[0px_2px_6px_0px_rgba(126,_48,_252,_0.1)]'>
+          <div className='flex aspect-square h-16 w-16 items-center justify-center rounded-xl border border-[#353535] bg-[#242424] p-1 shadow-[0px_2px_6px_0px_rgba(24,_119,_242,_0.1)]'>
             <Icons.perplexity />
           </div>
         </OrbitingCircles>
         <OrbitingCircles iconSize={40} radius={480}>
-          <div className='flex aspect-square h-16 w-16 items-center justify-center rounded-xl border border-[#353535] bg-[#242424] p-2 shadow-[0px_2px_6px_0px_rgba(126,_48,_252,_0.1)]'>
+          <div className='flex aspect-square h-16 w-16 items-center justify-center rounded-xl border border-[#353535] bg-[#242424] p-2 shadow-[0px_2px_6px_0px_rgba(24,_119,_242,_0.1)]'>
             <Icons.youtube />
           </div>
-          <div className='flex aspect-square h-16 w-16 items-center justify-center rounded-xl border border-[#353535] bg-[#242424] p-1 shadow-[0px_2px_6px_0px_rgba(126,_48,_252,_0.1)]'>
+          <div className='flex aspect-square h-16 w-16 items-center justify-center rounded-xl border border-[#353535] bg-[#242424] p-1 shadow-[0px_2px_6px_0px_rgba(24,_119,_242,_0.1)]'>
             <Icons.reddit />
           </div>
-          <div className='flex aspect-square h-16 w-16 items-center justify-center rounded-xl border border-[#353535] bg-[#242424] p-1 shadow-[0px_2px_6px_0px_rgba(126,_48,_252,_0.1)]'>
+          <div className='flex aspect-square h-16 w-16 items-center justify-center rounded-xl border border-[#353535] bg-[#242424] p-1 shadow-[0px_2px_6px_0px_rgba(24,_119,_242,_0.1)]'>
             <Icons.notion />
           </div>
         </OrbitingCircles>
@@ -269,7 +269,7 @@ function Integrations() {
                   gradientUnits='userSpaceOnUse'
                 >
                   <stop stopColor='#9C75D7' stopOpacity='0.4' />
-                  <stop offset='1' stopColor='#9C75D7' stopOpacity='0' />
+                  <stop offset='1' stopColor='#1877F2' stopOpacity='0' />
                 </linearGradient>
                 <linearGradient
                   id='mobile_paint1'
@@ -280,25 +280,25 @@ function Integrations() {
                   gradientUnits='userSpaceOnUse'
                 >
                   <stop stopColor='#9C75D7' stopOpacity='0.9' />
-                  <stop offset='1' stopColor='#9C75D7' stopOpacity='0' />
+                  <stop offset='1' stopColor='#1877F2' stopOpacity='0' />
                 </linearGradient>
               </defs>
             </svg>
           </div>
         </div>
         <OrbitingCircles radius={100}>
-          <div className='flex aspect-square h-12 w-12 items-center justify-center rounded-xl border border-[#353535] bg-[#242424] p-1 shadow-[0px_2px_6px_0px_rgba(126,_48,_252,_0.1)]'>
+          <div className='flex aspect-square h-12 w-12 items-center justify-center rounded-xl border border-[#353535] bg-[#242424] p-1 shadow-[0px_2px_6px_0px_rgba(24,_119,_242,_0.1)]'>
             <Icons.pinecone />
           </div>
-          <div className='flex aspect-square h-12 w-12 items-center justify-center rounded-xl border border-[#353535] bg-[#242424] p-1 shadow-[0px_2px_6px_0px_rgba(126,_48,_252,_0.1)]'>
+          <div className='flex aspect-square h-12 w-12 items-center justify-center rounded-xl border border-[#353535] bg-[#242424] p-1 shadow-[0px_2px_6px_0px_rgba(24,_119,_242,_0.1)]'>
             <Icons.slack />
           </div>
         </OrbitingCircles>
         <OrbitingCircles iconSize={32} radius={180} reverse>
-          <div className='flex aspect-square h-12 w-12 items-center justify-center rounded-xl border border-[#353535] bg-[#242424] p-1 shadow-[0px_2px_6px_0px_rgba(126,_48,_252,_0.1)]'>
+          <div className='flex aspect-square h-12 w-12 items-center justify-center rounded-xl border border-[#353535] bg-[#242424] p-1 shadow-[0px_2px_6px_0px_rgba(24,_119,_242,_0.1)]'>
             <Icons.gitHub />
           </div>
-          <div className='flex aspect-square h-12 w-12 items-center justify-center rounded-xl border border-[#353535] bg-[#242424] p-1 shadow-[0px_2px_6px_0px_rgba(126,_48,_252,_0.1)]'>
+          <div className='flex aspect-square h-12 w-12 items-center justify-center rounded-xl border border-[#353535] bg-[#242424] p-1 shadow-[0px_2px_6px_0px_rgba(24,_119,_242,_0.1)]'>
             <Icons.notion />
           </div>
         </OrbitingCircles>
