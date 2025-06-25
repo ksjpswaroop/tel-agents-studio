@@ -1,4 +1,4 @@
-import { completePath } from "@/utils/url";
+import { completePath } from "@/lib/research/url";
 
 // AI provider API base url
 const GOOGLE_GENERATIVE_AI_API_BASE_URL =
