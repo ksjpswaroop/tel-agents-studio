@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "projects": [
+    {
+      "name": "tel-cognitive-platform",
+      "source": "apps/sim",
+      "framework": "nextjs"
+    },
+    {
+      "name": "tel-deep-research",
+      "source": "apps/deep-research", 
+      "framework": "nextjs"
+    }
+  ],
+  "github": {
+    "silent": true
+  },
+  "build": {
+    "env": {
+      "TURBO_TEAM": "@tel-cognitive-platform",
+      "TURBO_TOKEN": ""
+    }
+  }
+}

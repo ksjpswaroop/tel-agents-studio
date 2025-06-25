@@ -74,6 +74,7 @@ const allNavigationItems: NavigationItem[] = [
     id: 'privacy',
     label: 'Privacy',
     icon: Shield,
+    hideInDev: true,
   },
   {
     id: 'subscription',
@@ -97,6 +98,11 @@ export function SettingsNavigation({
   isEnterprise = false,
 }: SettingsNavigationProps) {
   const navigationItems = allNavigationItems.filter((item) => {
+    // Hide privacy and subscription menus
+    if (item.id === 'privacy' || item.id === 'subscription') {
+      return false
+    }
+
     if (item.hideInDev && isDev) {
       return false
     }

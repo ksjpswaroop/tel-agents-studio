@@ -228,33 +228,33 @@ const WorkflowContent = React.memo(() => {
     [getNodes]
   )
 
+  // Detect the predominant handle orientation in the workflow
+  const detectedOrientation = useMemo(() => detectHandleOrientation(blocks), [blocks])
+
+  // Optimize spacing based on handle orientation
+  const orientationConfig = useMemo(
+    () =>
+      detectedOrientation === 'vertical'
+        ? {
+            // Vertical handles: optimize for top-to-bottom flow
+            horizontalSpacing: 400,
+            verticalSpacing: 300,
+            startX: 200,
+            startY: 200,
+          }
+        : {
+            // Horizontal handles: optimize for left-to-right flow
+            horizontalSpacing: 600,
+            verticalSpacing: 200,
+            startX: 150,
+            startY: 300,
+          },
+    [detectedOrientation]
+  )
+
   // Auto-layout handler
   const handleAutoLayout = useCallback(() => {
     if (Object.keys(blocks).length === 0) return
-
-    // Detect the predominant handle orientation in the workflow
-    const detectedOrientation = detectHandleOrientation(blocks)
-
-    // Optimize spacing based on handle orientation
-    const orientationConfig = useMemo(
-      () =>
-        detectedOrientation === 'vertical'
-          ? {
-              // Vertical handles: optimize for top-to-bottom flow
-              horizontalSpacing: 400,
-              verticalSpacing: 300,
-              startX: 200,
-              startY: 200,
-            }
-          : {
-              // Horizontal handles: optimize for left-to-right flow
-              horizontalSpacing: 600,
-              verticalSpacing: 200,
-              startX: 150,
-              startY: 300,
-            },
-      [detectedOrientation]
-    )
 
     applyAutoLayoutSmooth(blocks, edges, updateBlockPosition, fitView, resizeLoopNodesWrapper, {
       ...orientationConfig,
@@ -273,7 +273,7 @@ const WorkflowContent = React.memo(() => {
       orientation: detectedOrientation,
       blockCount: Object.keys(blocks).length,
     })
-  }, [blocks, edges, updateBlockPosition, fitView, isSidebarCollapsed, resizeLoopNodesWrapper])
+  }, [blocks, edges, updateBlockPosition, fitView, isSidebarCollapsed, resizeLoopNodesWrapper, orientationConfig, detectedOrientation])
 
   const debouncedAutoLayout = useCallback(() => {
     const debounceTimer = setTimeout(() => {

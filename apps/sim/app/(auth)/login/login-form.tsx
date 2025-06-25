@@ -461,7 +461,7 @@ export default function LoginPage({
 
             <Button
               type='submit'
-              className='flex h-11 w-full items-center justify-center gap-2 bg-[#701ffc] font-medium text-base text-white shadow-[#701ffc]/20 shadow-lg transition-colors duration-200 hover:bg-[#1877F2]'
+              className='flex h-11 w-full items-center justify-center gap-2 bg-[#1877F2] font-medium text-base text-white shadow-[#1877F2]/20 shadow-lg transition-colors duration-200 hover:bg-[#1877F2]'
               disabled={isLoading}
             >
               {isLoading ? 'Signing in...' : 'Sign In'}
@@ -473,7 +473,7 @@ export default function LoginPage({
           <span className='text-neutral-400'>Don't have an account? </span>
           <Link
             href={isInviteFlow ? `/signup?invite_flow=true&callbackUrl=${callbackUrl}` : '/signup'}
-            className='font-medium text-[#9D54FF] underline-offset-4 transition hover:text-[#a66fff] hover:underline'
+            className='font-medium text-[#1877F2] underline-offset-4 transition hover:text-[#1467d3] hover:underline'
           >
             Sign up
           </Link>
@@ -517,7 +517,7 @@ export default function LoginPage({
             <Button
               type='button'
               onClick={handleForgotPassword}
-              className='h-11 w-full bg-[#701ffc] font-medium text-base text-white shadow-[#701ffc]/20 shadow-lg transition-colors duration-200 hover:bg-[#1877F2]'
+              className='h-11 w-full bg-[#1877F2] font-medium text-base text-white shadow-[#1877F2]/20 shadow-lg transition-colors duration-200 hover:bg-[#1877F2]'
               disabled={isSubmittingReset}
             >
               {isSubmittingReset ? 'Sending...' : 'Send Reset Link'}

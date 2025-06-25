@@ -794,3 +794,351 @@ export const embedding = pgTable(
     embeddingNotNullCheck: check('embedding_not_null_check', sql`"embedding" IS NOT NULL`),
   })
 )
+
+// ====================
+// DEEP RESEARCH TABLES
+// ====================
+
+export const researchStatus = pgEnum('research_status', [
+  'draft',
+  'thinking', 
+  'planning',
+  'researching',
+  'writing',
+  'completed',
+  'paused',
+  'failed'
+])
+
+export const researchSession = pgTable(
+  'research_session',
+  {
+    id: text('id').primaryKey(),
+    workspaceId: text('workspace_id')
+      .notNull()
+      .references(() => workspace.id, { onDelete: 'cascade' }),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    
+    // Core research data
+    title: text('title').notNull(),
+    description: text('description'),
+    question: text('question').notNull(), // Initial research question
+    status: researchStatus('status').notNull().default('draft'),
+    
+    // Research configuration
+    aiConfig: jsonb('ai_config').notNull().default('{}'), // AI provider, models, settings
+    searchConfig: jsonb('search_config').notNull().default('{}'), // Search provider settings
+    
+    // Research state management
+    currentStep: text('current_step'), // Current step in research process
+    stateSnapshot: jsonb('state_snapshot'), // Complete state for pause/resume
+    
+    // Research outputs
+    reportPlan: text('report_plan'), // Generated research plan
+    finalReport: text('final_report'), // Final markdown report
+    knowledgeGraph: text('knowledge_graph'), // Mermaid graph definition
+    
+    // Research metadata
+    totalTasks: integer('total_tasks').notNull().default(0),
+    completedTasks: integer('completed_tasks').notNull().default(0),
+    totalSources: integer('total_sources').notNull().default(0),
+    estimatedDuration: integer('estimated_duration'), // Minutes
+    actualDuration: integer('actual_duration'), // Minutes
+    
+    // Collaboration
+    isPublic: boolean('is_public').notNull().default(false),
+    allowCollaborators: boolean('allow_collaborators').notNull().default(false),
+    
+    // Lifecycle timestamps
+    startedAt: timestamp('started_at'),
+    pausedAt: timestamp('paused_at'),
+    completedAt: timestamp('completed_at'),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at').notNull().defaultNow(),
+  },
+  (table) => ({
+    // Primary access patterns
+    workspaceUserIdx: index('research_workspace_user_idx').on(table.workspaceId, table.userId),
+    statusIdx: index('research_status_idx').on(table.status),
+    userCreatedIdx: index('research_user_created_idx').on(table.userId, table.createdAt),
+    
+    // Search and filtering
+    workspaceStatusIdx: index('research_workspace_status_idx').on(table.workspaceId, table.status),
+    publicIdx: index('research_public_idx').on(table.isPublic),
+    
+    // Performance optimization for lists
+    workspaceUpdatedIdx: index('research_workspace_updated_idx').on(table.workspaceId, table.updatedAt),
+  })
+)
+
+export const researchHistory = pgTable(
+  'research_history',
+  {
+    id: text('id').primaryKey(),
+    sessionId: text('session_id')
+      .notNull()
+      .references(() => researchSession.id, { onDelete: 'cascade' }),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    
+    // Version information
+    version: integer('version').notNull(),
+    description: text('description'), // User-provided description of changes
+    changeType: text('change_type').notNull(), // 'auto', 'manual', 'restore', 'branch'
+    
+    // Complete state snapshot
+    fullState: jsonb('full_state').notNull(), // Complete research state at this point
+    
+    // Diff information for efficiency
+    stateDiff: jsonb('state_diff'), // Changes from previous version
+    parentVersionId: text('parent_version_id'), // For branching scenarios
+    
+    // Metadata
+    stepName: text('step_name'), // Which research step this version represents
+    isBookmarked: boolean('is_bookmarked').notNull().default(false),
+    
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+  },
+  (table) => ({
+    // Primary access patterns
+    sessionVersionIdx: uniqueIndex('research_history_session_version_idx').on(table.sessionId, table.version),
+    sessionCreatedIdx: index('research_history_session_created_idx').on(table.sessionId, table.createdAt),
+    
+    // Bookmarked versions
+    sessionBookmarkedIdx: index('research_history_bookmarked_idx').on(table.sessionId, table.isBookmarked),
+    
+    // User activity
+    userCreatedIdx: index('research_history_user_created_idx').on(table.userId, table.createdAt),
+  })
+)
+
+export const researchTaskStatus = pgEnum('research_task_status', [
+  'pending',
+  'searching',
+  'processing', 
+  'completed',
+  'failed',
+  'skipped'
+])
+
+export const researchTask = pgTable(
+  'research_task',
+  {
+    id: text('id').primaryKey(),
+    sessionId: text('session_id')
+      .notNull()
+      .references(() => researchSession.id, { onDelete: 'cascade' }),
+    
+    // Task definition
+    query: text('query').notNull(), // Search query
+    researchGoal: text('research_goal'), // What this task aims to discover
+    taskType: text('task_type').notNull().default('search'), // 'search', 'analysis', 'synthesis'
+    priority: integer('priority').notNull().default(0), // Higher number = higher priority
+    
+    // Task execution
+    status: researchTaskStatus('status').notNull().default('pending'),
+    searchProvider: text('search_provider'), // Which search engine was used
+    maxResults: integer('max_results').notNull().default(5),
+    
+    // Results and analysis
+    searchResults: jsonb('search_results'), // Raw search results
+    analysis: text('analysis'), // AI analysis of the results
+    keyFindings: jsonb('key_findings'), // Structured findings
+    learnings: text('learnings'), // What was learned from this task
+    
+    // Performance tracking
+    executionTime: integer('execution_time'), // Milliseconds
+    resultCount: integer('result_count').notNull().default(0),
+    relevanceScore: decimal('relevance_score', { precision: 3, scale: 2 }), // 0.00-1.00
+    
+    // Error handling
+    errorMessage: text('error_message'),
+    retryCount: integer('retry_count').notNull().default(0),
+    
+    // Lifecycle
+    startedAt: timestamp('started_at'),
+    completedAt: timestamp('completed_at'),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at').notNull().defaultNow(),
+  },
+  (table) => ({
+    // Primary access patterns
+    sessionStatusIdx: index('research_task_session_status_idx').on(table.sessionId, table.status),
+    sessionPriorityIdx: index('research_task_session_priority_idx').on(table.sessionId, table.priority),
+    sessionCreatedIdx: index('research_task_session_created_idx').on(table.sessionId, table.createdAt),
+    
+    // Task queue management
+    statusPriorityIdx: index('research_task_status_priority_idx').on(table.status, table.priority),
+    
+    // Performance queries
+    sessionCompletedIdx: index('research_task_session_completed_idx').on(table.sessionId, table.completedAt),
+  })
+)
+
+export const researchSource = pgTable(
+  'research_source',
+  {
+    id: text('id').primaryKey(),
+    sessionId: text('session_id')
+      .notNull()
+      .references(() => researchSession.id, { onDelete: 'cascade' }),
+    taskId: text('task_id')
+      .references(() => researchTask.id, { onDelete: 'set null' }), // Can be null for manually added sources
+    
+    // Source information
+    url: text('url').notNull(),
+    title: text('title'),
+    content: text('content'), // Extracted/crawled content
+    summary: text('summary'), // AI-generated summary
+    
+    // Source metadata
+    sourceType: text('source_type').notNull().default('web'), // 'web', 'academic', 'news', 'social'
+    domain: text('domain'),
+    publishedAt: timestamp('published_at'),
+    author: text('author'),
+    
+    // Relevance and quality
+    relevanceScore: decimal('relevance_score', { precision: 3, scale: 2 }),
+    qualityScore: decimal('quality_score', { precision: 3, scale: 2 }),
+    credibilityScore: decimal('credibility_score', { precision: 3, scale: 2 }),
+    
+    // Usage tracking
+    citedInReport: boolean('cited_in_report').notNull().default(false),
+    citationCount: integer('citation_count').notNull().default(0),
+    
+    // Additional metadata
+    language: text('language').notNull().default('en'),
+    wordCount: integer('word_count'),
+    tags: jsonb('tags').notNull().default('[]'), // User/AI-generated tags
+    
+    // Content processing
+    isProcessed: boolean('is_processed').notNull().default(false),
+    processingError: text('processing_error'),
+    
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at').notNull().defaultNow(),
+  },
+  (table) => ({
+    // Primary access patterns
+    sessionIdx: index('research_source_session_idx').on(table.sessionId),
+    sessionTaskIdx: index('research_source_session_task_idx').on(table.sessionId, table.taskId),
+    
+    // URL uniqueness per session
+    sessionUrlIdx: uniqueIndex('research_source_session_url_idx').on(table.sessionId, table.url),
+    
+    // Source quality and relevance
+    sessionRelevanceIdx: index('research_source_relevance_idx').on(table.sessionId, table.relevanceScore),
+    sessionCitedIdx: index('research_source_cited_idx').on(table.sessionId, table.citedInReport),
+    
+    // Content analysis
+    domainIdx: index('research_source_domain_idx').on(table.domain),
+    sourceTypeIdx: index('research_source_type_idx').on(table.sourceType),
+    
+    // GIN index for tags
+    tagsGinIdx: index('research_source_tags_gin_idx').using('gin', table.tags),
+  })
+)
+
+export const researchKnowledgeLink = pgTable(
+  'research_knowledge_link',
+  {
+    id: text('id').primaryKey(),
+    sessionId: text('session_id')
+      .notNull()
+      .references(() => researchSession.id, { onDelete: 'cascade' }),
+    knowledgeBaseId: text('knowledge_base_id')
+      .notNull()
+      .references(() => knowledgeBase.id, { onDelete: 'cascade' }),
+    documentId: text('document_id')
+      .references(() => document.id, { onDelete: 'cascade' }), // Optional: specific document
+    
+    // Link metadata
+    linkType: text('link_type').notNull(), // 'source', 'context', 'output', 'reference'
+    usageContext: text('usage_context'), // How the knowledge was used
+    relevanceScore: decimal('relevance_score', { precision: 3, scale: 2 }),
+    
+    // Usage tracking
+    accessCount: integer('access_count').notNull().default(0),
+    lastAccessedAt: timestamp('last_accessed_at'),
+    
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at').notNull().defaultNow(),
+  },
+  (table) => ({
+    // Primary access patterns
+    sessionKbIdx: index('research_knowledge_session_kb_idx').on(table.sessionId, table.knowledgeBaseId),
+    sessionDocIdx: index('research_knowledge_session_doc_idx').on(table.sessionId, table.documentId),
+    
+    // Reverse lookup
+    kbSessionIdx: index('research_knowledge_kb_session_idx').on(table.knowledgeBaseId, table.sessionId),
+    
+    // Usage patterns
+    sessionTypeIdx: index('research_knowledge_type_idx').on(table.sessionId, table.linkType),
+    relevanceIdx: index('research_knowledge_relevance_idx').on(table.sessionId, table.relevanceScore),
+  })
+)
+
+export const researchArtifact = pgTable(
+  'research_artifact',
+  {
+    id: text('id').primaryKey(),
+    sessionId: text('session_id')
+      .notNull()
+      .references(() => researchSession.id, { onDelete: 'cascade' }),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    
+    // Artifact information
+    title: text('title').notNull(),
+    description: text('description'),
+    artifactType: text('artifact_type').notNull(), // 'report', 'summary', 'graph', 'export'
+    format: text('format').notNull(), // 'markdown', 'pdf', 'docx', 'json', 'mermaid'
+    
+    // Content
+    content: text('content').notNull(),
+    metadata: jsonb('metadata').notNull().default('{}'),
+    
+    // File information (if exported)
+    fileName: text('file_name'),
+    fileSize: integer('file_size'),
+    filePath: text('file_path'), // Cloud storage path
+    downloadUrl: text('download_url'),
+    
+    // Version tracking
+    version: integer('version').notNull().default(1),
+    isLatest: boolean('is_latest').notNull().default(true),
+    parentArtifactId: text('parent_artifact_id'), // For version chains
+    
+    // Access control
+    isPublic: boolean('is_public').notNull().default(false),
+    shareToken: text('share_token'), // For public sharing
+    
+    // Usage tracking
+    downloadCount: integer('download_count').notNull().default(0),
+    viewCount: integer('view_count').notNull().default(0),
+    lastAccessedAt: timestamp('last_accessed_at'),
+    
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at').notNull().defaultNow(),
+  },
+  (table) => ({
+    // Primary access patterns
+    sessionIdx: index('research_artifact_session_idx').on(table.sessionId),
+    sessionTypeIdx: index('research_artifact_session_type_idx').on(table.sessionId, table.artifactType),
+    sessionLatestIdx: index('research_artifact_latest_idx').on(table.sessionId, table.isLatest),
+    
+    // User artifacts
+    userCreatedIdx: index('research_artifact_user_created_idx').on(table.userId, table.createdAt),
+    
+    // Public sharing
+    shareTokenIdx: uniqueIndex('research_artifact_share_token_idx').on(table.shareToken),
+    publicIdx: index('research_artifact_public_idx').on(table.isPublic),
+    
+    // Version management
+    parentVersionIdx: index('research_artifact_parent_version_idx').on(table.parentArtifactId, table.version),
+  })
+)

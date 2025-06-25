@@ -1,4 +1,9 @@
 {
+  "framework": "nextjs",
+  "buildCommand": "cd ../.. && turbo run build --filter=sim",
+  "devCommand": "cd ../.. && turbo run dev --filter=sim",
+  "installCommand": "bun install",
+  "outputDirectory": ".next",
   "crons": [
     {
       "path": "/api/schedules/execute",
@@ -11,6 +16,22 @@
     {
       "path": "/api/logs/cleanup",
       "schedule": "0 0 * * *"
+    }
+  ],
+  "functions": {
+    "app/api/research/[...slug]/route.ts": {
+      "maxDuration": 300
+    }
+  },
+  "headers": [
+    {
+      "source": "/api/research/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
     }
   ]
 }

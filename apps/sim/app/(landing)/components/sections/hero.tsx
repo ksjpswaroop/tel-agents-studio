@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Command, CornerDownLeft, Brain, Building, Code, Zap, Shield, Users } from 'lucide-react'
+import { Command, CornerDownLeft, Brain, Building, Code, Zap, Shield, Users, Eye } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { useSession } from '@/lib/auth-client'
@@ -107,7 +107,7 @@ function Hero() {
         {/* TEL Products Section */}
         <div className='animation-container animate-fade-up opacity-0 will-change-[opacity,transform] [animation-delay:800ms]'>
           <h2 className='mb-8 font-semibold text-2xl text-white md:text-3xl'>Our Solutions</h2>
-          <div className='grid gap-6 md:grid-cols-3'>
+          <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-4'>
             {/* TEL Dep Research */}
             <div className='group rounded-2xl border border-[#333333] bg-[#131313] p-6 transition-all duration-300 hover:border-[#1877F2]/50 hover:shadow-lg hover:shadow-[#1877F2]/10'>
               <div className='mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-[#1877F2]'>
@@ -117,6 +117,16 @@ function Hero() {
               <p className='text-neutral-400 leading-relaxed'>
                 Advanced AI research and development solutions for cutting-edge technological innovations and scientific breakthroughs.
               </p>
+              {/* Research Progress Visual */}
+              <div className='mt-4 space-y-1'>
+                <div className='flex items-center justify-between text-xs text-neutral-500'>
+                  <span>AI Research</span>
+                  <span>92%</span>
+                </div>
+                <div className='h-2 w-full rounded-full bg-[#333333]'>
+                  <div className='h-2 w-[92%] animate-pulse rounded-full bg-gradient-to-r from-[#1877F2] to-[#1467d3]'></div>
+                </div>
+              </div>
             </div>
 
             {/* TEL-ME */}
@@ -131,6 +141,13 @@ function Hero() {
               <p className='text-neutral-500 leading-relaxed'>
                 Intelligent automation and workflow management platform designed to streamline business processes and enhance productivity.
               </p>
+              {/* Automation Visual */}
+              <div className='mt-4 flex items-center justify-center space-x-1'>
+                <div className='h-2 w-2 animate-bounce rounded-full bg-[#1877F2]/40 [animation-delay:0ms]'></div>
+                <div className='h-2 w-2 animate-bounce rounded-full bg-[#1877F2]/60 [animation-delay:150ms]'></div>
+                <div className='h-2 w-2 animate-bounce rounded-full bg-[#1877F2]/80 [animation-delay:300ms]'></div>
+                <span className='mx-2 text-xs text-neutral-500'>Processing...</span>
+              </div>
             </div>
 
             {/* TEL App Builder */}
@@ -145,6 +162,35 @@ function Hero() {
               <p className='text-neutral-500 leading-relaxed'>
                 No-code/low-code platform for rapid application development with AI-powered features and seamless integration capabilities.
               </p>
+              {/* Code Building Visual */}
+              <div className='mt-4 flex items-center justify-center space-x-2'>
+                <div className='h-4 w-4 rounded border border-[#1877F2]/30 bg-[#1877F2]/10'></div>
+                <div className='h-1 w-4 bg-[#1877F2]/50'></div>
+                <div className='h-6 w-6 rounded border border-[#1877F2]/50 bg-[#1877F2]/20'></div>
+                <div className='h-1 w-4 bg-[#1877F2]/50'></div>
+                <div className='h-4 w-4 rounded border border-[#1877F2]/30 bg-[#1877F2]/10'></div>
+              </div>
+            </div>
+
+            {/* Visual Agent Builder */}
+            <div className='group rounded-2xl border border-[#333333] bg-[#131313] p-6 transition-all duration-300 hover:border-[#1877F2]/50 hover:shadow-lg hover:shadow-[#1877F2]/10'>
+              <div className='mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-[#1877F2]'>
+                <Eye className='h-6 w-6 text-white' />
+              </div>
+              <h3 className='mb-3 font-semibold text-xl text-white'>Visual Agent Builder</h3>
+              <p className='text-neutral-400 leading-relaxed'>
+                Intuitive drag-and-drop interface for creating intelligent agents with visual workflow design and real-time testing capabilities.
+              </p>
+              {/* Simple Visual Representation */}
+              <div className='mt-4 flex items-center justify-center'>
+                <div className='flex items-center space-x-2'>
+                  <div className='h-3 w-3 animate-pulse rounded-full bg-[#1877F2]'></div>
+                  <div className='h-0.5 w-8 bg-gradient-to-r from-[#1877F2] to-transparent'></div>
+                  <div className='h-4 w-4 animate-pulse rounded-sm border-2 border-[#1877F2] bg-[#1877F2]/20'></div>
+                  <div className='h-0.5 w-8 bg-gradient-to-r from-[#1877F2] to-transparent'></div>
+                  <div className='h-3 w-3 animate-pulse rounded-full bg-[#1877F2]'></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

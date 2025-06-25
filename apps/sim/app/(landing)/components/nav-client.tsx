@@ -98,7 +98,6 @@ const NavLinks = ({
               href={link.href}
               className={navItemClass}
               onMouseEnter={link.label === 'Contributors' ? handleContributorsHover : undefined}
-              {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
             >
               {link.label}
             </Link>
@@ -115,33 +114,6 @@ const NavLinks = ({
         )
       })}
 
-      {/* Enterprise button with the same action as contact */}
-      {onContactClick &&
-        (mobile ? (
-          <SheetClose asChild key='enterprise'>
-            <motion.div variants={mobileNavItemVariants}>
-              <Link
-                href='https://form.typeform.com/to/jqCO12pF'
-                target='_blank'
-                rel='noopener noreferrer'
-                className={navItemClass}
-              >
-                Enterprise
-              </Link>
-            </motion.div>
-          </SheetClose>
-        ) : (
-          <motion.div variants={mobile ? mobileNavItemVariants : undefined} key='enterprise'>
-            <Link
-              href='https://form.typeform.com/to/jqCO12pF'
-              target='_blank'
-              rel='noopener noreferrer'
-              className={navItemClass}
-            >
-              Enterprise
-            </Link>
-          </motion.div>
-        ))}
     </>
   )
 }
@@ -216,25 +188,6 @@ export default function NavClient({
 
         <div className='flex flex-1 items-center justify-end'>
           <div className={`flex items-center ${isMobile ? 'gap-2' : 'gap-3'}`}>
-            {!isMobile && (
-              <>
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: 0.4 }}
-                >
-                  <Link
-                    href='https://form.typeform.com/to/jqCO12pF'
-                    target='_blank'
-                    rel='noopener noreferrer'
-                  >
-                    <Button className='h-[43px] bg-[#1877F2] px-6 py-2 font-geist-sans font-medium text-base text-neutral-100 transition-colors duration-200 hover:bg-[#1467d3]'>
-                      Contact
-                    </Button>
-                  </Link>
-                </motion.div>
-              </>
-            )}
 
             {isMobile && (
               <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
@@ -282,24 +235,6 @@ export default function NavClient({
                             currentPath={currentPath}
                             onContactClick={onContactClick}
                           />
-                          {children && (
-                            <motion.div variants={mobileNavItemVariants}>
-                              <SheetClose asChild>{children}</SheetClose>
-                            </motion.div>
-                          )}
-                          <motion.div variants={mobileButtonVariants} className='mt-auto pt-6'>
-                            <SheetClose asChild>
-                              <Link
-                                href='https://form.typeform.com/to/jqCO12pF'
-                                target='_blank'
-                                rel='noopener noreferrer'
-                              >
-                                <Button className='w-full bg-[#1877F2] py-6 font-medium text-base text-white shadow-[#1877F2]/20 shadow-lg transition-colors duration-200 hover:bg-[#1467d3]'>
-                                  Contact
-                                </Button>
-                              </Link>
-                            </SheetClose>
-                          </motion.div>
                         </motion.div>
                       </SheetContent>
                     </motion.div>

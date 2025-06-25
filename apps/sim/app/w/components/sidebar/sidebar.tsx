@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import clsx from 'clsx'
-import { HelpCircle, LibraryBig, ScrollText, Send, Settings } from 'lucide-react'
+import { HelpCircle, LibraryBig, ScrollText, Send, Settings, Search, Zap, Blocks, FileSearch, Brain } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
@@ -176,7 +176,7 @@ export function Sidebar() {
 
         {/* Navigation Section */}
         <div className='mt-6 flex-shrink-0'>
-          <NavSection isLoading={isLoading} itemCount={3} isCollapsed={isCollapsed}>
+          <NavSection isLoading={isLoading} itemCount={7} isCollapsed={isCollapsed}>
             <NavSection.Item
               icon={<ScrollText className='h-[18px] w-[18px]' />}
               href='/w/logs'
@@ -194,6 +194,50 @@ export function Sidebar() {
               isCollapsed={isCollapsed}
               shortcutCommand={getKeyboardShortcutText('K', true, true)}
               shortcutCommandPosition='below'
+            />
+            <NavSection.Item
+              icon={<FileSearch className='h-[18px] w-[18px]' />}
+              href='/w/research'
+              label='Deep Research'
+              active={pathname.startsWith('/w/research') && !pathname.startsWith('/w/research/embedded')}
+              isCollapsed={isCollapsed}
+              shortcutCommand={getKeyboardShortcutText('R', true, true)}
+              shortcutCommandPosition='below'
+              onClick={() => {
+                logger.info('Deep Research menu clicked', { pathname, activeWorkspaceId })
+                router.push('/w/research')
+              }}
+            />
+            <NavSection.Item
+              icon={<Brain className='h-[18px] w-[18px]' />}
+              href='/w/research/embedded'
+              label='Deep Research (Enhanced)'
+              active={pathname.startsWith('/w/research/embedded')}
+              isCollapsed={isCollapsed}
+              shortcutCommand={getKeyboardShortcutText('E', true, true)}
+              shortcutCommandPosition='below'
+              onClick={() => {
+                logger.info('Deep Research Enhanced menu clicked', { pathname, activeWorkspaceId })
+                router.push('/w/research/embedded')
+              }}
+            />
+            <NavSection.Item
+              icon={<Search className='h-[18px] w-[18px]' />}
+              href='https://tel-dep-research.com'
+              label='TEL Dep Research'
+              isCollapsed={isCollapsed}
+            />
+            <NavSection.Item
+              icon={<Zap className='h-[18px] w-[18px]' />}
+              href='https://tel-me.com'
+              label='TEL-ME'
+              isCollapsed={isCollapsed}
+            />
+            <NavSection.Item
+              icon={<Blocks className='h-[18px] w-[18px]' />}
+              href='https://tel-app-builder.com'
+              label='TEL App Builder'
+              isCollapsed={isCollapsed}
             />
             <NavSection.Item
               icon={<Settings className='h-[18px] w-[18px]' />}

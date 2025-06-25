@@ -72,6 +72,12 @@ export const env = createEnv({
     AZURE_OPENAI_ENDPOINT: z.string().url().optional(),
     AZURE_OPENAI_API_VERSION: z.string().optional(),
 
+    // Deep Research API Keys
+    TAVILY_API_KEY: z.string().min(1).optional(),
+    EXA_API_KEY: z.string().min(1).optional(),
+    FIRECRAWL_API_KEY: z.string().min(1).optional(),
+    GOOGLE_GENERATIVE_AI_API_KEY: z.string().min(1).optional(),
+
     // OAuth blocks (all optional)
     GOOGLE_CLIENT_ID: z.string().optional(),
     GOOGLE_CLIENT_SECRET: z.string().optional(),

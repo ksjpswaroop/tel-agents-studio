@@ -93,7 +93,7 @@ export function SocketProvider({ children, user }: SocketProviderProps) {
   const [retryCount, setRetryCount] = useState(0)
   const [currentWorkflowId, setCurrentWorkflowId] = useState<string | null>(null)
   const [presenceUsers, setPresenceUsers] = useState<PresenceUser[]>([])
-  const retryTimeoutRef = useRef<NodeJS.Timeout>()
+  const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Use refs to store event handlers to avoid stale closures
   const eventHandlers = useRef<{
@@ -115,7 +115,7 @@ export function SocketProvider({ children, user }: SocketProviderProps) {
   const clearRetryTimeout = () => {
     if (retryTimeoutRef.current) {
       clearTimeout(retryTimeoutRef.current)
-      retryTimeoutRef.current = undefined
+      retryTimeoutRef.current = null
     }
   }
 
